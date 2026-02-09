@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Napoli Pizza</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --main-color: #ff5722;      
+      --accent-color: #ffeb3b;      
+      --bg-color: #fff8e1;          
+      --text-color: #bf360c;        
+      --white: #ffffff;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 10%;
+      background-color: var(--white);
+      box-shadow: 0 2px 12px var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--main-color);
+    }
+
+    nav {
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 600;
+      font-size: 1.05rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background-color: var(--accent-color);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: var(--main-color);
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4rem 10%;
+      background-color: var(--white);
+      border-radius: 25px;
+      margin: 3rem auto;
+      max-width: 1200px;
+      box-shadow: 0 10px 30px var(--shadow);
+      transition: all 0.3s ease;
+    }
+
+    .main-text {
+      max-width: 50%;
+    }
+
+    .main-text h1 {
+      font-size: 3.2rem;
+      color: var(--main-color);
+      margin-bottom: 1rem;
+    }
+
+    .main-text p {
+      font-size: 1.2rem;
+      color: var(--text-color);
+      margin-bottom: 2rem;
+    }
+
+    .main-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .main-buttons button {
+      padding: 1rem 1.8rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 3.5rem;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--main-color), var(--accent-color));
+      color: var(--text-color);
+      box-shadow: 0 6px 20px rgba(255, 235, 59, 0.5);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .main-buttons button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(255, 235, 59, 0.8);
+    }
+
+    .main-buttons button::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+      transform: rotate(25deg);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .main-buttons button:hover::after {
+      opacity: 1;
+    }
+
+    .main-image {
+      max-width: 45%; 
+    }
+
+    .main-image img {
+      max-width: 100%; 
+      border-radius: 20px;
+      filter: drop-shadow(0 4px 30px rgba(0, 0, 0, 0.15));
+      animation: pulse 3s infinite ease-in-out;
+      transition: transform 0.3s ease;
+    }
+
+    .main-image img:hover {
+      transform: scale(1.05);
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.07);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 10%;
+      font-size: 1rem;
+      background-color: var(--white);
+      color: var(--text-color);
+      border-top: 3px solid var(--accent-color);
+      margin-top: 3rem;
+      box-shadow: 0 -2px 10px var(--shadow);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1 class="logo">Napoli Pizza</h1>
+    <nav>
+      <a href="#">Location</a>
+      <a href="#">Services</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <section class="main">
+    <div class="main-text">
+      <h1>Delicious Meals Delivered to Your Door</h1>
+      <p>Enjoy fresh, flavorful meals made with the finest ingredients, delivered straight to your door, every time.</p>
+      <div class="main-buttons">
+        <a href="menu.html">
+          <button>Order Now</button>
+        </a>
+      </div>
+    </div>
+    <div class="main-image">
+      <img src="FoodImages/pizzaLogo.png" alt="Delicious Food" />
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Napoli. All rights reserved.
+  </footer>
+</body>
+</html>

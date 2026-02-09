@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pizza Menu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Josefin+Sans:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fff5ec;
+      color: #333;
+      min-height: 100vh;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 25px 40px;
+      background: #ff7043;
+      color: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 42px;
+      margin: 0;
+    }
+
+    .nav-buttons button {
+      background: #ffc107;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s, transform 0.3s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .nav-buttons button:hover {
+      background-color: #e64a3b;
+      transform: scale(1.05);
+    }
+
+    .menu {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      padding: 40px 20px;
+    }
+
+    .menu-item {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 25px;
+      width: 260px;
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .menu-item:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .menu-item h3 {
+      font-size: 26px;
+      color: #d84315;
+      margin-bottom: 8px;
+    }
+
+    .menu-item p {
+      font-size: 15px;
+      margin-bottom: 12px;
+      color: #444;
+    }
+
+    .menu-item label {
+      display: block;
+      font-size: 14px;
+      color: #555;
+      margin: 4px 0;
+    }
+
+    .menu-item button {
+      background: #ffc107;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .menu-item button:hover {
+      background-color: #e64a3b;
+    }
+
+    .confirmation-message {
+      color: #43a047;
+      font-weight: bold;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .quantity-counter {
+      margin-top: 5px;
+      font-weight: bold;
+      color: #ff8f00;
+    }
+
+    .cart-summary {
+      text-align: center;
+      margin: 30px auto;
+      font-size: 20px;
+      font-weight: bold;
+      color: #d84315;
+    }
+
+    #loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .loading-box {
+      background: black;
+      padding: 20px 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .spinner {
+      width: 30px;
+      height: 30px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #ff5722;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 10px;
+    }
+
+    .loading-text {
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeInOnLoad {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-buttons">
+      <button onclick="window.history.back()">⬅ Back</button>
+    </div>
+    <h1>Pizza Menu</h1>
+    <div class="nav-buttons">
+      <button onclick="navigateWithLoading('../checkout.html')">🛒 Cart</button>
+    </div>
+  </header>
+  <div class="menu">
+    <!-- Margherita Pizza -->
+    <div class="menu-item">
+      <h3>Margherita Pizza</h3>
+      <p>A classic favorite with fresh tomato sauce, mozzarella cheese, and basil.</p>
+      <label><input type="radio" name="margherita-size" value="50cm" checked onchange="updatePrice('margherita')"> 50cm - $15.99</label>
+      <label><input type="radio" name="margherita-size" value="30cm" onchange="updatePrice('margherita')"> 30cm - $11.99</label>
+      <button onclick="addToCart({name: 'Margherita Pizza', size: document.querySelector('input[name=margherita-size]:checked').value, price: currentPrice['margherita'], image: 'images/margherita_pizza.jpg'}, 'margherita')">Add to Cart</button>
+      <p class="confirmation-message">Added to cart!</p>
+      <p class="quantity-counter" id="margherita-counter">Quantity: 0</p>
+    </div>
+
+    <!-- Pepperoni Pizza -->
+    <div class="menu-item">
+      <h3>Pepperoni Pizza</h3>
+      <p>Loaded with crispy pepperoni slices over melted cheese and tomato sauce.</p>
+      <label><input type="radio" name="pepperoni-size" value="50cm" checked onchange="updatePrice('pepperoni')"> 50cm - $17.99</label>
+      <label><input type="radio" name="pepperoni-size" value="30cm" onchange="updatePrice('pepperoni')"> 30cm - $13.99</label>
+      <button onclick="addToCart({name: 'Pepperoni Pizza', size: document.querySelector('input[name=pepperoni-size]:checked').value, price: currentPrice['pepperoni'], image: 'images/pepperoni_pizza.jpg'}, 'pepperoni')">Add to Cart</button>
+      <p class="confirmation-message">Added to cart!</p>
+      <p class="quantity-counter" id="pepperoni-counter">Quantity: 0</p>
+    </div>
+
+    <!-- BBQ Chicken Pizza -->
+    <div class="menu-item">
+      <h3>BBQ Chicken Pizza</h3>
+      <p>Grilled chicken, tangy BBQ sauce, mozzarella cheese, and red onions.</p>
+      <label><input type="radio" name="bbq-chicken-size" value="50cm" checked onchange="updatePrice('bbq-chicken')"> 50cm - $19.99</label>
+      <label><input type="radio" name="bbq-chicken-size" value="30cm" onchange="updatePrice('bbq-chicken')"> 30cm - $15.99</label>
+      <button onclick="addToCart({name: 'BBQ Chicken Pizza', size: document.querySelector('input[name=bbq-chicken-size]:checked').value, price: currentPrice['bbq-chicken'], image: 'images/bbq_chicken_pizza.jpg'}, 'bbq-chicken')">Add to Cart</button>
+      <p class="confirmation-message">Added to cart!</p>
+      <p class="quantity-counter" id="bbq-chicken-counter">Quantity: 0</p>
+    </div>
+
+    <!-- Veggie Delight Pizza -->
+    <div class="menu-item">
+      <h3>Veggie Delight Pizza</h3>
+      <p>A delightful combination of vegetables, including bell peppers, olives, and mushrooms.</p>
+      <label><input type="radio" name="veggie-delight-size" value="50cm" checked onchange="updatePrice('veggie-delight')"> 50cm - $17.99</label>
+      <label><input type="radio" name="veggie-delight-size" value="30cm" onchange="updatePrice('veggie-delight')"> 30cm - $13.99</label>
+      <button onclick="addToCart({name: 'Veggie Delight Pizza', size: document.querySelector('input[name=veggie-delight-size]:checked').value, price: currentPrice['veggie-delight'], image: 'images/veggie_delight_pizza.jpg'}, 'veggie-delight')">Add to Cart</button>
+      <p class="confirmation-message">Added to cart!</p>
+      <p class="quantity-counter" id="veggie-delight-counter">Quantity: 0</p>
+    </div>
+
+    <!-- Hawaiian Pizza -->
+    <div class="menu-item">
+      <h3>Hawaiian Pizza</h3>
+      <p>Ham, pineapple, and melted cheese for a tropical flavor.</p>
+      <label><input type="radio" name="hawaiian-size" value="50cm" checked onchange="updatePrice('hawaiian')"> 50cm - $18.99</label>
+      <label><input type="radio" name="hawaiian-size" value="30cm" onchange="updatePrice('hawaiian')"> 30cm - $14.99</label>
+      <button onclick="addToCart({name: 'Hawaiian Pizza', size: document.querySelector('input[name=hawaiian-size]:checked').value, price: currentPrice['hawaiian'], image: 'images/hawaiian_pizza.jpg'}, 'hawaiian')">Add to Cart</button>
+      <p class="confirmation-message">Added to cart!</p>
+      <p class="quantity-counter" id="hawaiian-counter">Quantity: 0</p>
+    </div>
+  </div>
+
+  <div class="cart-summary">
+    <p>Total: $<span id="total">0.00</span></p>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading">
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <div class="loading-text">Loading...</div>
+    </div>
+  </div>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let totalPrice = 0;
+    
+    let quantities = {
+      'margherita': 0,
+      'pepperoni': 0,
+      'bbq-chicken': 0,
+      'veggie-delight': 0,
+      'hawaiian': 0
+    };
+    
+    let currentPrice = {
+      'margherita': 15.99,
+      'pepperoni': 17.99,
+      'bbq-chicken': 19.99,
+      'veggie-delight': 17.99,
+      'hawaiian': 18.99
+    };
+
+    window.onload = () => {
+      updateCartSummary();
+      cart.forEach(item => {
+        const key = item.key;
+        if (quantities[key] !== undefined) {
+          quantities[key] += item.quantity;
+          const counter = document.getElementById(`${key}-counter`);
+          if (counter) counter.textContent = `Quantity: ${quantities[key]}`;
+        }
+      });
+    };
+
+    function updatePrice(type) {
+      const size = document.querySelector(`input[name="${type}-size"]:checked`).value;
+      currentPrice[type] = size === '50cm' ? (type === 'margherita' ? 15.99 : type === 'pepperoni' ? 17.99 : type === 'bbq-chicken' ? 19.99 : type === 'veggie-delight' ? 17.99 : 18.99) : (type === 'margherita' ? 11.99 : type === 'pepperoni' ? 13.99 : type === 'bbq-chicken' ? 15.99 : type === 'veggie-delight' ? 13.99 : 14.99);
+      updateCartSummary();
+    }
+
+    function addToCart(item, type) {
+      const size = item.size;
+      item.price = currentPrice[type];
+      item.quantity = 1;
+      item.key = type;
+    
+      const index = cart.findIndex(p => p.name === item.name && p.size === size);
+      if (index !== -1) {
+        cart[index].quantity += 1;
+      } else {
+        cart.push(item);
+      }
+    
+      quantities[type]++;
+      document.getElementById(`${type}-counter`).textContent = `Quantity: ${quantities[type]}`;
+    
+      const confirmation = document.querySelector(`.menu-item button[onclick*="${type}"]`).nextElementSibling;
+      if (confirmation) {
+        confirmation.style.display = 'block';
+        setTimeout(() => { confirmation.style.display = 'none'; }, 1500);
+      }
+    
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartSummary();
+    }
+
+    function updateCartSummary() {
+      let total = 0;
+      cart.forEach(item => total += item.price * item.quantity);
+      document.getElementById('total').textContent = total.toFixed(2);
+    }
+
+    function navigateWithLoading(url) {
+      document.getElementById('loading').style.display = 'flex';
+      setTimeout(() => {
+        window.location.href = url;
+      }, 1000);
+    }
+  </script>    
+</body>
+</html>
